@@ -20,7 +20,9 @@
 				"vscjava.vscode-java-pack",
 				"redhat.java",
 				"vmware.vscode-boot-dev-pack",
-				"mutantdino.resourcemonitor"
+				"mutantdino.resourcemonitor",
+				"redhat.vscode-xml",
+				"redhat.vscode-yaml"
 			]
 		}
 	}
