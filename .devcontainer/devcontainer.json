@@ -3,14 +3,29 @@
 {
 	"name": "Java",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/base:trixie",
-
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu24.04",
+	"capAdd": [
+		"CAP_AUDIT_WRITE",
+		"CAP_NET_ADMIN",
+		"CAP_SYS_ADMIN"
+	],
+	"runArgs": [
+		"--device=/dev/fuse",
+		"--device=/dev/net/tun",
+		"--security-opt=label=disable",
+		"--tmpfs",
+		"/run",
+		"--security-opt=unmask=/proc/*",
+		"--security-opt",
+		"apparmor=unconfined",
+		"--security-opt",
+		"seccomp=unconfined"
+	],
 	"features": {
 		"ghcr.io/devcontainers/features/java:1": {
-			"version": "25",
-			"installMaven": "true",
-			"installGradle": "false",
-			"jdkDistro":"tem"
+			"installMaven": true,
+			"version": "latest",
+			"jdkDistro": "tem"
 		}
 	},
 	"customizations": {
@@ -26,16 +41,20 @@
 			]
 		}
 	}
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "java -version",
-
+	,
+	"postCreateCommand": "sudo apt-get update && sudo apt-get install podman -y && sudo apt-get install software-properties-common -y && sudo add-apt-repository ppa:cncf-buildpacks/pack-cli -y && sudo apt-get update && sudo apt-get install pack-cli -y",
+	"postStartCommand": {
+		"podman": "nohup bash -c 'podman system service --time=0 unix:///tmp/podman.sock &'"
+	},
 	// Configure tool-specific properties.
 	// "customizations": {},
-
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
+	"containerEnv": {
+		"TESTCONTAINERS_RYUK_DISABLED": "true",
+		"DOCKER_HOST": "unix:///tmp/podman.sock"
+	}
 }
