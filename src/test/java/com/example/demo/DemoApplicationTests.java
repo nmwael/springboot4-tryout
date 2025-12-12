@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -19,7 +18,7 @@ class DemoApplicationTests {
 	RestTestClient client;
 
 	@BeforeEach
-	void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
+	void setUp(WebApplicationContext context) {
 		client = RestTestClient.bindToApplicationContext(context)
 				.build();
 	}
